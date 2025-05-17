@@ -132,6 +132,15 @@ const Navbar = ({ cartCount, openCart, onHomeClick, showCart = true }) => {
                   Nosotros
                 </Link>
               </li>
+
+              <li>
+              <Link 
+                to="/contacto" 
+                className="block py-2 px-4 hover:text-blue-200 transition-colors"
+              >
+                Contacto
+              </Link>
+            </li>
             </ul>
           </div>
         )}
