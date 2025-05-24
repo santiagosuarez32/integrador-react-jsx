@@ -97,11 +97,11 @@ const Ecommerce = () => {
       <HeroSection scrollToCategory={scrollToProducts} />
 
       {/* Carrusel sin animación */}
-      <div className="relative max-w-2xl mx-auto mt-12 p-6 bg-blue-600 rounded-lg shadow-lg ">
-        <div className="flex justify-between items-center lg:gap-6 sm:gap-5 gap-4 " >
+      <div className="relative max-w-2xl mx-auto mt-12 p-6 bg-blue-600 rounded-lg shadow-lg overflow-hidden ">
+        <div className="flex justify-between items-center lg:gap-6 sm:gap-5 gap-4  " >
           <button
             onClick={prevSlide}
-            className="bg-gray-300 p-2 rounded-full hover:bg-gray-400"
+            className="bg-gray-300 p-2 rounded-full hover:bg-gray-400 overflow-hidden"
           >
             ◀
           </button>
@@ -111,7 +111,7 @@ const Ecommerce = () => {
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-40 h-40 object-cover rounded-lg shadow-md lg: w-80"
+                  className="w-40 h-40 object-cover rounded-lg shadow-md lg: w-80 "
                 />
                 <h3 className="text-lg font-semibold mt-2">{product.name}</h3>
                 <p className="text-gray-200">{product.price} USD</p>
@@ -120,7 +120,7 @@ const Ecommerce = () => {
           </div>
           <button
             onClick={nextSlide}
-            className="bg-gray-300 p-2 rounded-full hover:bg-gray-400"
+            className="bg-gray-300 p-2 rounded-full hover:bg-gray-400 overflow-hidden"
           >
             ▶
           </button>
