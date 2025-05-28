@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+
+:root {
+  --color-black: #212121;
+  --color-white: #F5F5F5;
+  --color-blue: #2979FF;
+  --color-red: #D32F2F;
+  --color-gray: #757575;
+}
+
+
 // Agrega esto en tu CSS global
 @keyframes slideInUp {
   from {

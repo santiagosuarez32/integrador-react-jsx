@@ -13,7 +13,7 @@
   
   /* Estilos personalizados */
   .hero {
-    background: url('https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1600&q=80') no-repeat center center;
+    background: url('https://images.pexels.com/photos/1751238/pexels-photo-1751238.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1') no-repeat center center;
     background-size: cover;
   }
   
@@ -22,7 +22,7 @@
   }
   
   .btn-primary {
-    background-color: #f59e0b;
+    background-color:#2979FF ;
     color: #1e293b;
   }
   
@@ -38,7 +38,7 @@
   
   /* Efecto hover moderno */
   .btn-primary:hover {
-    background-color: #e67e22;
+    background-color: #2979FF;
     transform: translateY(-2px);
   }
   

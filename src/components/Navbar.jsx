@@ -6,7 +6,7 @@ const Navbar = ({ cartCount, openCart, onHomeClick, showCart = true }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <nav className="bg-blue-600 text-white p-4 sticky top-0 z-50">
+    <nav className="bg-[var(--color-red)] text-white p-4 sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo a la izquierda */}
         <Link 
@@ -14,7 +14,7 @@ const Navbar = ({ cartCount, openCart, onHomeClick, showCart = true }) => {
           onClick={onHomeClick}
           className="text-2xl font-bold hover:text-blue-200 transition-colors cursor-pointer"
         >
-          Mi Tienda Online
+          FastStep
         </Link>
 
         {/* Menú para desktop (centrado) */}

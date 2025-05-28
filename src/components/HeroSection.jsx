@@ -6,19 +6,19 @@ const HeroSection = ({ scrollToCategory }) => { // ⬅ Cambio de nombre de prop
   return (
     <section className="hero h-screen w-full flex items-center justify-center relative overflow-hidden z-10">
       {/* Fondo animado */}
-      <div className="hero-bg absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-800 opacity-90"></div>
+      <div className=" absolute inset-0 bg-gradient-to-r from-red-400 to-gray-800 opacity-90"></div>
       
       {/* Contenido */}
       <div className="container mx-auto px-4 z-10 text-center">
         <div className="max-w-3xl mx-auto">
           {/* Título principal con animación */}
           <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 animate-fadeIn">
-            Bienvenido a <span className="text-yellow-300">Mi Tienda</span>
+            Bienvenido a <span className="text-[var(--color-blue)]">FastStep</span>
           </h1>
           
           {/* Subtítulo */}
           <p className="text-xl md:text-2xl text-gray-200 mb-8 animate-fadeIn delay-100">
-            Descubre los mejores productos con envío rápido y garantía de calidad
+            Las mejores zapatillas deportivas al mejor precio.
           </p>
           
           {/* Botones CTA */}
@@ -29,12 +29,7 @@ const HeroSection = ({ scrollToCategory }) => { // ⬅ Cambio de nombre de prop
             >
               Ver Productos
             </button>
-            <Link 
-             
-              className="btn-secondary px-8 py-3 rounded-full font-semibold text-lg transition-all hover:scale-105"
-            >
-              Ofertas Especiales
-            </Link>
+           
           </div>
         </div>
       </div>
