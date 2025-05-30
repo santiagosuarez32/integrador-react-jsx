@@ -26,21 +26,7 @@ const Ecommerce = () => {
     categoryFilterRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  // Estado y lógica del carrusel
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const nextSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex + 1 > products.length - 3 ? 0 : prevIndex + 1
-    );
-  };
-
-  const prevSlide = () => {
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? products.length - 3 : prevIndex - 1
-    );
-  };
-
+  
   // Funciones del carrito
   const addToCart = (product) => {
     setCart((prevCart) => {
@@ -97,43 +83,7 @@ const Ecommerce = () => {
       <HeroSection scrollToCategory={scrollToProducts} />
 
       {/* Carrusel sin animación */}
-      <div className="relative max-w-2xl mx-auto mt-12 p-6 bg-blue-600 rounded-lg shadow-lg overflow-hidden ">
-        <div className="flex justify-between items-center lg:gap-6 sm:gap-5 gap-4  " >
-          <button
-            onClick={prevSlide}
-            className="bg-gray-300 p-2 rounded-full hover:bg-gray-400 overflow-hidden"
-          >
-            ◀
-          </button>
-          <div className="flex space-x-4 justify-center items-center ">
-            {products.slice(currentIndex, currentIndex + 3).map((product) => (
-              <div key={product.id} className="flex flex-col items-center text-white">
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-40 h-40 object-cover rounded-lg shadow-md lg: w-80 "
-                />
-                <h3 className="text-lg font-semibold mt-2">{product.name}</h3>
-                <p className="text-gray-200">{product.price} USD</p>
-              </div>
-            ))}
-          </div>
-          <button
-            onClick={nextSlide}
-            className="bg-gray-300 p-2 rounded-full hover:bg-gray-400 overflow-hidden"
-          >
-            ▶
-          </button>
-        </div>
-        <div className="flex justify-center mt-4">
-          <button
-            onClick={scrollToProducts}
-            className="bg-white text-blue-600 px-4 py-2 rounded-lg shadow-md hover:bg-gray-100 transition"
-          >
-            Ir a Productos
-          </button>
-        </div>
-      </div>
+
 
       <main className="container mx-auto p-4 flex-grow">
         <div ref={categoryFilterRef}>

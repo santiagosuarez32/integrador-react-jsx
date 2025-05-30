@@ -1,8 +1,8 @@
 const categories = [
     { id: 'todos', name: 'Todos' },
-    { id: 'ropa', name: 'Ropa' },
-    { id: 'zapatos', name: 'Zapatos' },
-    { id: 'accesorios', name: 'Accesorios' },
+    { id: 'training', name: 'Training' },
+    { id: 'running', name: 'Running' },
+    { id: 'casual', name: 'Casual' },
   ];
   
   const CategoryFilter = ({ selectedCategory, setSelectedCategory }) => {
