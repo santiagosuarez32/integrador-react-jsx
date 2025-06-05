@@ -1,13 +1,22 @@
-import React from "react";
-
-const Offer = () => {
-  return (
-    <section className="py-10 text-center bg-white">
-      <h2 className="text-2xl font-bold">¡Únete para recibir un regalo!</h2>
-      <p>Elige entre una paleta de sombras ($37 valor) o un producto de cuidado de la piel ($64 valor).</p>
-      <p className="text-red-500 font-bold mt-2">¡Además, recibe un cupón de $10 para la tienda mensual!</p>
-    </section>
-  );
-};
-
-export default Offer;
+const HotOffers = () => {
+    const offers = [
+      { name: "Running Edge", price: "$165" },
+      { name: "Maxim Wear", price: "$114" },
+      { name: "Gear to Glare", price: "$250" },
+    ];
+  
+    return (
+      <section className="py-10 bg-white text-black text-center">
+        <h2 className="text-3xl font-bold mb-6">HOT SEARCH</h2>
+        <div className="grid grid-cols-3 gap-6 max-w-4xl mx-auto">
+          {offers.map((offer) => (
+            <div key={offer.name} className="border p-4 rounded-lg shadow-md">
+              <h3 className="text-xl font-semibold">{offer.name}</h3>
+              <p className="text-red-500 font-bold">{offer.price}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+    );
+  };
+export default HotOffers;  
