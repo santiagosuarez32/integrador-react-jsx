@@ -1,14 +1,16 @@
-
-import { Routes, Route } from "react-router-dom";
-
+import React from "react";
+import Navbar from "./components/Navbar";
+import Hero from "./components/Hero";
+import Offer from "./components/Offer";
+import Modal from "./components/Modal";
 
 function App() {
-
   return (
-    <Routes>
-      <Route path="/" /> 
-     
-    </Routes>
+    <div>
+      <Navbar />
+      <Hero />
+      <Offer />
+    </div>
   );
 }
 
