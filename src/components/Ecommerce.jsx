@@ -1,9 +1,9 @@
 
 import Navbar from "./Navbar";
-import CategoryFilter from "./CategoryFilter";
+
 import ProductList from "./ProductList";
-import CartModal from "./CartModal";
-import AddToCartToast from "./AddToCartToast";
+
+
 import HeroSection from "./HeroSection";
 import Hero from "./Hero";
 import Modal from "./Modal";
