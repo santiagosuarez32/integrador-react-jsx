@@ -11,14 +11,14 @@ const CategoryFilter = ({ onSelectCategory }) => {
   };
 
   return (
-    <div className="w-full flex justify-center items-center bg-gray-100 p-6 rounded-md shadow-md mt-8">
+    <div className="w-full flex justify-center items-center p-6 rounded-md  mt-8 bg-gray-900">
 
       <ul className="flex flex-wrap justify-center gap-4">
         {categories.map((category) => (
           <li
             key={category}
-            className={`cursor-pointer px-4 py-2 rounded-md text-gray-800 transition ${
-              selectedCategory === category ? "bg-red-600 text-white" : "hover:bg-gray-200"
+            className={`bg-red cursor-pointer px-4 py-2 rounded-md text-white transition ${
+              selectedCategory === category ? "bg-red-600 text-white" : "hover:bg-red-600"
             }`}
             onClick={() => handleCategoryClick(category)}
           >

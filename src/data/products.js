@@ -62,13 +62,6 @@ export const products = [
     category: "Running",
     image: "/products/Brooks-Ghost-15.png",
   },
-  {
-    id: 10,
-    name: "Mizuno Wave Rider 27",
-    price: 140.0,
-    category: "Running",
-    image: "/products/Mizuno-Wave-Rider-27.png",
-  },
 ];
 
 export default products;

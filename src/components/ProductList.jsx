@@ -16,19 +16,19 @@ const ProductList = () => {
       : products.filter((product) => product.category.toLowerCase() === selectedCategory.toLowerCase());
 
   return (
-    <div className="w-full flex flex-col items-center mt-8">
+    <div className="w-full flex flex-col items-center  bg-gray-900">
       {/* Filtro de Categorías */}
       <CategoryFilter onSelectCategory={setSelectedCategory} />
 
       {/* Grid de Productos */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 w-full max-w-6xl px-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 w-full max-w-6xl px-12 ">
         {filteredProducts.length > 0 ? (
           filteredProducts.map((product) => (
-            <div key={product.id} className="border p-4 rounded-lg shadow-lg text-center bg-gray-400" >
-              <img src={product.image} alt={product.name} className="w-32 mx-auto mb-4 rounded-md" />
+            <div key={product.id} className="  p-4 rounded-3xl text-center bg-gray-500" >
+              <img src={product.image} alt={product.name} className="w-48 mx-auto mb-4 rounded-md" />
               <h3 className="text-lg font-bold" style={{ fontFamily: "'Oswald', sans-serif" }}>{product.name}</h3>
-              <p className="text-gray-700">${product.price.toFixed(2)}</p>
-              <button className="mt-4 bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700">
+              <p className="text-black" style={{ fontFamily: "'Poppins', sans-serif" }}>${product.price.toFixed(2)}</p>
+              <button className="mt-3 bg-blue-600 text-white px-3 py-2 rounded-2xl hover:bg-blue-700" style={{ fontFamily: "'Poppins', sans-serif" }}>
                 Añadir al carrito
               </button>
             </div>

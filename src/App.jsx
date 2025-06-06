@@ -11,7 +11,6 @@ function App() {
     <div>
       <Navbar />
       <Hero />
-   
       <ProductList />
       <Offer />
     </div>
