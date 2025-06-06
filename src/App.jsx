@@ -5,6 +5,8 @@ import Offer from "./components/Offer";
 import Modal from "./components/Modal";
 import CategoryFilter from "./components/CategoryFilter";
 import ProductList from "./components/ProductList";
+import AboutUs from "./components/AboutUs";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -12,7 +14,9 @@ function App() {
       <Navbar />
       <Hero />
       <ProductList />
-      <Offer />
+      <AboutUs />
+      <Footer />
+ 
     </div>
   );
 }

@@ -16,12 +16,12 @@ const ProductList = () => {
       : products.filter((product) => product.category.toLowerCase() === selectedCategory.toLowerCase());
 
   return (
-    <div className="w-full flex flex-col items-center  bg-gray-900">
+    <div className="w-full flex flex-col items-center  bg-gray-900 ">
       {/* Filtro de Categorías */}
       <CategoryFilter onSelectCategory={setSelectedCategory} />
 
       {/* Grid de Productos */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 w-full max-w-6xl px-12 ">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 w-full max-w-6xl px-12 mb-20">
         {filteredProducts.length > 0 ? (
           filteredProducts.map((product) => (
             <div key={product.id} className="  p-4 rounded-3xl text-center bg-gray-500" >
