@@ -21,7 +21,7 @@ const ProductList = () => {
       <CategoryFilter onSelectCategory={setSelectedCategory} />
 
       {/* Grid de Productos */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 w-full max-w-6xl px-12 mb-20">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 w-full max-w-6xl px-12 mb-20 lg:mb-40">
         {filteredProducts.length > 0 ? (
           filteredProducts.map((product) => (
             <div key={product.id} className="  p-4 rounded-3xl text-center bg-gray-500" >

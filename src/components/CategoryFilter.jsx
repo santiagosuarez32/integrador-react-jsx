@@ -13,7 +13,7 @@ const CategoryFilter = ({ onSelectCategory }) => {
   return (
     <div className="w-full flex justify-center items-center p-6 rounded-md  mt-8 bg-gray-900">
 
-      <ul className="flex flex-wrap justify-center gap-4">
+      <ul className="flex flex-wrap justify-center gap-4" style={{ fontFamily: "'Poppins', sans-serif" }}>
         {categories.map((category) => (
           <li
             key={category}
