@@ -9,6 +9,7 @@ const Cart = ({
   onIncrement,
   onDecrement,
   onClearCart,
+  onClearToast // nueva función para limpiar el toast de "producto añadido"
 }) => {
   const [confirmModal, setConfirmModal] = useState(false);
 
@@ -17,12 +18,18 @@ const Cart = ({
     0
   );
 
-  // Función para mostrar el modal de confirmación
+  // Solo abre el modal de confirmación si hay productos en el carrito.
+  // Además, si existe el toast de producto añadido, se limpia antes de abrir el modal de confirmación.
   const handleComprar = () => {
-    setConfirmModal(true);
+    if (cartItems.length > 0) {
+      if (typeof onClearToast === "function") {
+        onClearToast(); // Limpia el toast de "producto añadido" (o modal) antes de abrir confirmación.
+      }
+      setConfirmModal(true);
+    }
   };
 
-  // Al confirmar, se hace scroll hasta arriba y, tras un breve retraso, se redirige al home (refrescando la página)
+  // Al confirmar, se hace scroll hasta arriba y, tras un breve retraso, se redirige al home.
   const handleConfirm = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     setTimeout(() => {
@@ -30,14 +37,14 @@ const Cart = ({
     }, 300);
   };
 
-  // Cierra el modal sin confirmar
+  // Cierra el modal de confirmación sin confirmar
   const handleCancel = () => {
     setConfirmModal(false);
   };
 
   return ReactDOM.createPortal(
     <>
-      {/* Overlay para desenfocar el fondo */}
+      {/* Overlay del carrito */}
       <div
         className={`fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm transition-opacity duration-500 ${
           isOpen
@@ -53,7 +60,10 @@ const Cart = ({
           isOpen ? "translate-x-0" : "translate-x-full"
         } z-[70]`}
       >
-        <div className="flex flex-col h-full p-6" style={{ fontFamily: "'Poppins', sans-serif" }}>
+        <div
+          className="flex flex-col h-full p-6"
+          style={{ fontFamily: "'Poppins', sans-serif" }}
+        >
           {/* Encabezado */}
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold text-white">Carrito</h2>
@@ -81,7 +91,10 @@ const Cart = ({
                     />
                     <div className="flex-1">
                       {/* Nombre del producto */}
-                      <p className="font-medium text-white" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                      <p
+                        className="font-medium text-white"
+                        style={{ fontFamily: "'Oswald', sans-serif" }}
+                      >
                         {item.name}
                       </p>
                       {/* Precio del producto */}
@@ -89,7 +102,7 @@ const Cart = ({
                         Precio: {item.price.toFixed(2)}
                       </p>
                     </div>
-                    {/* Controles de cantidad con botones en fondo rojo */}
+                    {/* Controles de cantidad */}
                     <div className="flex items-center">
                       <button
                         onClick={() => onDecrement(item.id)}
@@ -120,7 +133,12 @@ const Cart = ({
             <div className="mt-4 flex gap-2">
               <button
                 onClick={handleComprar}
-                className="flex-1 bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors"
+                disabled={cartItems.length === 0}
+                className={`flex-1 bg-blue-600 text-white py-2 rounded-md transition-colors ${
+                  cartItems.length === 0
+                    ? "opacity-50 cursor-not-allowed"
+                    : "hover:bg-blue-700"
+                }`}
               >
                 Comprar
               </button>
@@ -138,11 +156,17 @@ const Cart = ({
       {/* Modal de Confirmación de Compra */}
       {confirmModal && (
         <div className="fixed inset-0 flex items-center justify-center z-[80]">
+          {/* Overlay del modal de confirmación */}
           <div
             className="fixed inset-0 bg-black opacity-50"
             onClick={handleCancel}
           ></div>
-          <div className="bg-white p-6 rounded-2xl shadow-lg z-[90]" style={{ fontFamily: "'Poppins', sans-serif" }}>
+          {/* Contenedor del modal (detiene propagación de clics) */}
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white p-6 rounded-2xl shadow-lg z-[90]"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
             <h3 className="text-xl font-semibold mb-4">Confirmar compra</h3>
             <p className="mb-4">¿Estás seguro de confirmar la compra?</p>
             <div className="flex justify-end gap-2">
@@ -153,7 +177,10 @@ const Cart = ({
                 Cancelar
               </button>
               <button
-                onClick={handleConfirm}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleConfirm();
+                }}
                 className="px-4 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700"
               >
                 Confirmar

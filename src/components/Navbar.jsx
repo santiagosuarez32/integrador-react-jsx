@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Se importa useNavigate
 import { FaShoppingCart } from "react-icons/fa";
 import Cart from "./Cart";
 
@@ -11,15 +12,14 @@ const Navbar = ({
   onClearCart,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   // Handler para el ícono del carrito
   const handleCartClick = (e) => {
-    e.stopPropagation(); // Para evitar que se propague a elementos padres
-    // Cierra el menú si está abierto
+    e.stopPropagation();
     if (menuOpen) {
       setMenuOpen(false);
     }
-    // Alterna la apertura del carrito
     setCartOpen((prev) => !prev);
   };
 
@@ -29,11 +29,44 @@ const Navbar = ({
     setMenuOpen((prev) => !prev);
   };
 
+  // Nuevo handler para el enlace "Productos"
+  const handleProductosClick = (e) => {
+    e.preventDefault();
+    setMenuOpen(false);
+    if (window.location.pathname !== "/") {
+      // Si no estamos en la home, navegamos a ella...
+      navigate("/");
+      // ... y esperamos un momento para luego hacer scroll
+      setTimeout(() => {
+        const prodElement = document.getElementById("productos");
+        if (prodElement) {
+          prodElement.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100);
+    } else {
+      // Si ya estás en la home, simplemente hace scroll
+      const prodElement = document.getElementById("productos");
+      if (prodElement) {
+        prodElement.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
+
   return (
     <nav className="fixed top-0 w-full bg-transparent backdrop-blur-sm text-white flex items-center justify-between px-6 py-4 z-50">
       {/* Logo */}
       <div className="text-md font-bold">
-        <img src="/img/logo.PNG" alt="MaxShoes Logo" className="max-w-20" />
+        <img
+          src="/img/logo.PNG"
+          alt="MaxShoes Logo"
+          className="max-w-20 cursor-pointer"
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("/");
+            setMenuOpen(false);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+        />
       </div>
 
       {/* Menú principal */}
@@ -47,22 +80,51 @@ const Navbar = ({
           style={{ fontFamily: "'Poppins', sans-serif" }}
         >
           <li>
-            <a href="#" className="block py-2 hover:text-gray-600">
+            <a
+              href="#"
+              className="block py-2 hover:text-gray-600"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/");
+                setMenuOpen(false);
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+            >
               Inicio
             </a>
           </li>
           <li>
-            <a href="#" className="block py-2 hover:text-gray-600">
+            <a
+              href="#"
+              className="block py-2 hover:text-gray-600"
+              onClick={handleProductosClick}
+            >
               Productos
             </a>
           </li>
           <li>
-            <a href="#" className="block py-2 hover:text-gray-600">
+            <a
+              href="#"
+              className="block py-2 hover:text-gray-600"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/nosotros");
+                setMenuOpen(false);
+              }}
+            >
               Nosotros
             </a>
           </li>
           <li>
-            <a href="#" className="block py-2 hover:text-gray-600">
+            <a
+              href="#"
+              className="block py-2 hover:text-gray-600"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/contacto");
+                setMenuOpen(false);
+              }}
+            >
               Contacto
             </a>
           </li>
