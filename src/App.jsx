@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import ProductList from "./components/ProductList";
 import AboutUs from "./components/AboutUs";
+import Nosotros from "./components/Nosotros"; // Componente que muestra toda la información de "Nosotros"
 import Footer from "./components/Footer";
 
 function App() {
@@ -53,35 +55,34 @@ function App() {
 
   const handleClearCart = () => setCartItems([]);
 
-  return (
+  // Esta es la estructura de la página principal
+  const Home = () => (
     <>
       {/* Toast de confirmación */}
       {toast && (
-  <>
-    <style jsx="true">{`
-      @keyframes slideUpFade {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-      .animate-slideUpFade {
-        animation: slideUpFade 0.5s ease-out;
-      }
-    `}</style>
-    <div className="fixed bottom-5 right-5 bg-green-500 text-white px-4 py-2 rounded shadow z-[100] animate-slideUpFade">
-      {toast}
-    </div>
-  </>
-)}
+        <>
+          <style jsx="true">{`
+            @keyframes slideUpFade {
+              from {
+                opacity: 0;
+                transform: translateY(20px);
+              }
+              to {
+                opacity: 1;
+                transform: translateY(0);
+              }
+            }
+            .animate-slideUpFade {
+              animation: slideUpFade 0.5s ease-out;
+            }
+          `}</style>
+          <div className="fixed bottom-5 right-5 bg-green-800 text-white px-4 py-2 rounded shadow z-[100] animate-slideUpFade">
+            {toast}
+          </div>
+        </>
+      )}
 
-
-
-      {/* Pasamos cartItems y las funciones al Navbar */}
+      {/* Se pasan cartItems y las funciones al Navbar */}
       <Navbar
         cartOpen={cartOpen}
         setCartOpen={setCartOpen}
@@ -91,13 +92,18 @@ function App() {
         onClearCart={handleClearCart}
       />
       <Hero />
-
       {/* Se pasa la función de añadir producto desde ProductList */}
       <ProductList onAddToCart={handleAddToCart} />
-
       <AboutUs />
       <Footer />
     </>
+  );
+
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/nosotros" element={<Nosotros />} />
+    </Routes>
   );
 }
 

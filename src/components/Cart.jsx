@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import { FaTimes } from "react-icons/fa";
 
@@ -10,10 +10,30 @@ const Cart = ({
   onDecrement,
   onClearCart,
 }) => {
+  const [confirmModal, setConfirmModal] = useState(false);
+
   const totalPrice = cartItems.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
   );
+
+  // Función para mostrar el modal de confirmación
+  const handleComprar = () => {
+    setConfirmModal(true);
+  };
+
+  // Al confirmar, se hace scroll hasta arriba y, tras un breve retraso, se redirige al home (refrescando la página)
+  const handleConfirm = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 300);
+  };
+
+  // Cierra el modal sin confirmar
+  const handleCancel = () => {
+    setConfirmModal(false);
+  };
 
   return ReactDOM.createPortal(
     <>
@@ -29,11 +49,11 @@ const Cart = ({
 
       {/* Panel del carrito */}
       <div
-        className={`fixed top-0 right-0 h-screen w-80 bg-gray-800 shadow-2xl transform transition-transform duration-500 ease-in-out ${
+        className={`fixed top-20 rounded-xl right-0 h-screen max-h-[80vh] w-80 bg-gray-800 shadow-2xl transform transition-transform duration-500 ease-in-out ${
           isOpen ? "translate-x-0" : "translate-x-full"
         } z-[70]`}
       >
-        <div className="flex flex-col h-full p-6">
+        <div className="flex flex-col h-full p-6" style={{ fontFamily: "'Poppins', sans-serif" }}>
           {/* Encabezado */}
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold text-white">Carrito</h2>
@@ -49,28 +69,42 @@ const Cart = ({
             {cartItems.length > 0 ? (
               <ul className="space-y-4">
                 {cartItems.map((item) => (
-                  <li key={item.id} className="border-b pb-2">
-                    <div className="flex justify-between items-center">
-                      <p className="font-medium text-white">{item.name}</p>
-                      <div className="flex items-center">
-                        <button
-                          onClick={() => onDecrement(item.id)}
-                          className="text-white px-2"
-                        >
-                          –
-                        </button>
-                        <span className="text-white">{item.quantity}</span>
-                        <button
-                          onClick={() => onIncrement(item.id)}
-                          className="text-white px-2"
-                        >
-                          +
-                        </button>
-                      </div>
+                  <li
+                    key={item.id}
+                    className="border-b pb-2 flex items-center space-x-4"
+                  >
+                    {/* Imagen del producto */}
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="w-16 h-16 object-cover rounded"
+                    />
+                    <div className="flex-1">
+                      {/* Nombre del producto */}
+                      <p className="font-medium text-white" style={{ fontFamily: "'Oswald', sans-serif" }}>
+                        {item.name}
+                      </p>
+                      {/* Precio del producto */}
+                      <p className="text-sm text-gray-300">
+                        Precio: {item.price.toFixed(2)}
+                      </p>
                     </div>
-                    <p className="text-sm text-gray-300">
-                      Precio: {item.price.toFixed(2)}
-                    </p>
+                    {/* Controles de cantidad con botones en fondo rojo */}
+                    <div className="flex items-center">
+                      <button
+                        onClick={() => onDecrement(item.id)}
+                        className="bg-black hover:bg-red-700 text-white px-2 py-1 rounded-lg"
+                      >
+                        –
+                      </button>
+                      <span className="text-white mx-1">{item.quantity}</span>
+                      <button
+                        onClick={() => onIncrement(item.id)}
+                        className="bg-black hover:bg-red-700 text-white px-2 py-1 rounded-lg"
+                      >
+                        +
+                      </button>
+                    </div>
                   </li>
                 ))}
               </ul>
@@ -84,7 +118,10 @@ const Cart = ({
               Total: {totalPrice.toFixed(2)}
             </p>
             <div className="mt-4 flex gap-2">
-              <button className="flex-1 bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors">
+              <button
+                onClick={handleComprar}
+                className="flex-1 bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors"
+              >
                 Comprar
               </button>
               <button
@@ -97,6 +134,34 @@ const Cart = ({
           </div>
         </div>
       </div>
+
+      {/* Modal de Confirmación de Compra */}
+      {confirmModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-[80]">
+          <div
+            className="fixed inset-0 bg-black opacity-50"
+            onClick={handleCancel}
+          ></div>
+          <div className="bg-white p-6 rounded-2xl shadow-lg z-[90]" style={{ fontFamily: "'Poppins', sans-serif" }}>
+            <h3 className="text-xl font-semibold mb-4">Confirmar compra</h3>
+            <p className="mb-4">¿Estás seguro de confirmar la compra?</p>
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={handleCancel}
+                className="px-4 py-2 bg-gray-300 rounded-xl hover:bg-gray-400"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={handleConfirm}
+                className="px-4 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700"
+              >
+                Confirmar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>,
     document.body
   );

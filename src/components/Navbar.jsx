@@ -11,7 +11,7 @@ const Navbar = ({
   onClearCart,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
-  // Estado que controla la visibilidad del navbar con animación
+  // Estado para la animación del navbar
   const [navVisible, setNavVisible] = useState(false);
 
   useEffect(() => {
@@ -21,9 +21,26 @@ const Navbar = ({
     return () => clearTimeout(timer);
   }, []);
 
+  // Handler para el ícono del carrito
+  const handleCartClick = (e) => {
+    e.stopPropagation(); // Para evitar que se propague a elementos padres
+    // Cierra el menú si está abierto
+    if (menuOpen) {
+      setMenuOpen(false);
+    }
+    // Alterna la apertura del carrito
+    setCartOpen((prev) => !prev);
+  };
+
+  // Handler para el menú hamburguesa
+  const handleMenuClick = (e) => {
+    e.stopPropagation();
+    setMenuOpen((prev) => !prev);
+  };
+
   return (
     <nav
-      className={`fixed top-0 w-full bg-transparent backdrop-blur-sm text-white flex items-center justify-between px-6 py-4 z-50 transition-all duration-700 ease-out ${
+      className={`fixed top-0 w-full bg-transparent backdrop-blur-sm text-white flex items-center justify-between px-6 py-4 z-50 transition-all duration-2000 ${
         navVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-10"
       }`}
     >
@@ -37,11 +54,9 @@ const Navbar = ({
         className={`absolute top-16 left-0 w-full bg-gray-900 rounded-xl backdrop-blur-sm transition-transform duration-250 ease-in-out ${
           menuOpen ? "translate-y-7" : "-translate-y-full"
         } md:relative md:top-auto md:w-auto md:bg-transparent md:translate-y-0 md:flex md:justify-center p-5`}
+        style={{ fontFamily: "'Poppins', sans-serif" }}
       >
-        <ul
-          className="flex flex-col md:flex-row md:space-x-6 text-center lg:translate-x-[-30px] md:translate-x-0 md:translate-y-0"
-          style={{ fontFamily: "'Poppins', sans-serif" }}
-        >
+        <ul className="flex flex-col md:flex-row md:space-x-6 text-center lg:translate-x-[-30px] md:translate-x-0 md:translate-y-0">
           <li>
             <a href="#" className="block py-2 hover:text-gray-600">
               Inicio
@@ -69,11 +84,11 @@ const Navbar = ({
       <div className="flex items-center space-x-4">
         <FaShoppingCart
           className="text-2xl cursor-pointer"
-          onClick={() => setCartOpen(!cartOpen)} // Toggle del panel de carrito
+          onClick={handleCartClick}
         />
         <button
           className="md:hidden text-2xl focus:outline-none"
-          onClick={() => setMenuOpen(!menuOpen)}
+          onClick={handleMenuClick}
         >
           {menuOpen ? "✖" : "☰"}
         </button>
