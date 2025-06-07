@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import Cart from "./Cart";
 
@@ -11,15 +11,6 @@ const Navbar = ({
   onClearCart,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
-  // Estado para la animación del navbar
-  const [navVisible, setNavVisible] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setNavVisible(true);
-    }, 1500);
-    return () => clearTimeout(timer);
-  }, []);
 
   // Handler para el ícono del carrito
   const handleCartClick = (e) => {
@@ -39,11 +30,7 @@ const Navbar = ({
   };
 
   return (
-    <nav
-      className={`fixed top-0 w-full bg-transparent backdrop-blur-sm text-white flex items-center justify-between px-6 py-4 z-50 transition-all duration-2000 ${
-        navVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-10"
-      }`}
-    >
+    <nav className="fixed top-0 w-full bg-transparent backdrop-blur-sm text-white flex items-center justify-between px-6 py-4 z-50">
       {/* Logo */}
       <div className="text-md font-bold">
         <img src="/img/logo.PNG" alt="MaxShoes Logo" className="max-w-20" />
@@ -54,9 +41,11 @@ const Navbar = ({
         className={`absolute top-16 left-0 w-full bg-gray-900 rounded-xl backdrop-blur-sm transition-transform duration-250 ease-in-out ${
           menuOpen ? "translate-y-7" : "-translate-y-full"
         } md:relative md:top-auto md:w-auto md:bg-transparent md:translate-y-0 md:flex md:justify-center p-5`}
-        style={{ fontFamily: "'Poppins', sans-serif" }}
       >
-        <ul className="flex flex-col md:flex-row md:space-x-6 text-center lg:translate-x-[-30px] md:translate-x-0 md:translate-y-0">
+        <ul
+          className="flex flex-col md:flex-row md:space-x-6 text-center lg:translate-x-[-30px] md:translate-x-0 md:translate-y-0"
+          style={{ fontFamily: "'Poppins', sans-serif" }}
+        >
           <li>
             <a href="#" className="block py-2 hover:text-gray-600">
               Inicio
