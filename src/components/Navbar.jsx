@@ -108,7 +108,7 @@ const Navbar = ({
     className="block py-2 hover:text-gray-600"
     onClick={(e) => {
       e.preventDefault();
-      navigate("/contacto"); // Cambia la ruta a "contacto"
+      navigate("/nosotros"); // Cambia la ruta a "contacto"
       setMenuOpen(false);
     }}
   >
