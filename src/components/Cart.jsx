@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { FaTimes, FaTrash } from "react-icons/fa";
 
@@ -13,18 +13,24 @@ const Cart = ({
   onRemoveItem // función para remover un producto individual
 }) => {
   const [confirmModal, setConfirmModal] = useState(false);
-  // Estados para borrar un solo producto:
   const [deleteModal, setDeleteModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
-  // Estado para el modal de vaciado total del carrito
   const [clearCartModal, setClearCartModal] = useState(false);
+
+  // Si el carrito se cierra, reseteamos los modales.
+  useEffect(() => {
+    if (!isOpen) {
+      setConfirmModal(false);
+      setDeleteModal(false);
+      setClearCartModal(false);
+    }
+  }, [isOpen]);
 
   const totalPrice = cartItems.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
   );
 
-  // Funciones de compra
   const handleComprar = () => {
     if (cartItems.length > 0) {
       if (typeof onClearToast === "function") {
@@ -41,11 +47,11 @@ const Cart = ({
     }, 300);
   };
 
+  // Ahora usamos handleCancel en el botón "Cancelar"
   const handleCancel = () => {
     setConfirmModal(false);
   };
 
-  // Funciones para borrar un solo producto
   const handleDeleteClick = (item) => {
     setItemToDelete(item);
     setDeleteModal(true);
@@ -68,7 +74,6 @@ const Cart = ({
     setItemToDelete(null);
   };
 
-  // Funciones para vaciar el carrito mediante modal
   const handleClearCartClick = () => {
     if (typeof onClearToast === "function") {
       onClearToast();
@@ -117,30 +122,21 @@ const Cart = ({
             {cartItems.length > 0 ? (
               <ul className="space-y-4">
                 {cartItems.map((item) => (
-                  <li
-                    key={item.id}
-                    className="border-b pb-2 flex items-center space-x-4"
-                  >
-                    {/* Imagen del producto */}
+                  <li key={item.id} className="border-b pb-2 flex items-center space-x-4">
                     <img
                       src={item.image}
                       alt={item.name}
                       className="w-16 h-16 object-cover rounded"
                     />
                     <div className="flex-1">
-                      {/* Nombre del producto */}
                       <p
                         className="font-medium text-white"
                         style={{ fontFamily: "'Oswald', sans-serif" }}
                       >
                         {item.name}
                       </p>
-                      {/* Precio del producto */}
-                      <p className="text-sm text-gray-300">
-                        Precio: {item.price.toFixed(2)}
-                      </p>
+                      <p className="text-sm text-gray-300">Precio: {item.price.toFixed(2)}</p>
                     </div>
-                    {/* Controles de cantidad */}
                     <div className="flex items-center">
                       <button
                         onClick={() => {
@@ -162,7 +158,6 @@ const Cart = ({
                         +
                       </button>
                     </div>
-                    {/* Botón para borrar el producto */}
                     <button
                       onClick={() => handleDeleteClick(item)}
                       className="bg-red-500 text-white px-2 py-1 rounded-lg"
@@ -178,24 +173,25 @@ const Cart = ({
           </div>
           {/* Total y acciones */}
           <div className="mt-4 border-t pt-4">
-            <p className="text-lg font-semibold text-white">
-              Total: {totalPrice.toFixed(2)}
-            </p>
+            <p className="text-lg font-semibold text-white">Total: {totalPrice.toFixed(2)}</p>
             <div className="mt-4 flex gap-2">
               <button
                 onClick={handleComprar}
                 disabled={cartItems.length === 0}
                 className={`flex-1 bg-blue-600 text-white py-2 rounded-md transition-colors ${
-                  cartItems.length === 0
-                    ? "opacity-50 cursor-not-allowed"
-                    : "hover:bg-blue-700"
+                  cartItems.length === 0 ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-700"
                 }`}
               >
                 Comprar
               </button>
               <button
-                onClick={handleClearCartClick}
-                className="flex-1 bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition-colors"
+                onClick={cartItems.length > 0 ? handleClearCartClick : undefined}
+                disabled={cartItems.length === 0}
+                className={`flex-1 py-2 rounded-md transition-colors ${
+                  cartItems.length === 0
+                    ? "bg-red-600 opacity-50 cursor-not-allowed"
+                    : "bg-red-600 text-white hover:bg-red-700"
+                }`}
               >
                 Vaciar Carrito
               </button>
@@ -207,10 +203,7 @@ const Cart = ({
       {/* Modal de Confirmación de Compra */}
       {confirmModal && (
         <div className="fixed inset-0 flex items-center justify-center z-[80]">
-          <div
-            className="fixed inset-0 bg-black opacity-50"
-            onClick={handleCancel}
-          ></div>
+          <div className="fixed inset-0 bg-black opacity-50"></div>
           <div
             onClick={(e) => e.stopPropagation()}
             className="bg-white p-6 rounded-2xl shadow-lg z-[90]"
@@ -242,19 +235,14 @@ const Cart = ({
       {/* Modal de Confirmación para borrar un producto */}
       {deleteModal && (
         <div className="fixed inset-0 flex items-center justify-center z-[85]">
-          <div
-            className="fixed inset-0 bg-black opacity-50"
-            onClick={cancelDelete}
-          ></div>
+          <div className="fixed inset-0 bg-black opacity-50"></div>
           <div
             onClick={(e) => e.stopPropagation()}
             className="bg-white p-6 rounded-2xl shadow-lg z-[95]"
             style={{ fontFamily: "'Poppins', sans-serif" }}
           >
             <h3 className="text-xl font-semibold mb-4">Eliminar Producto</h3>
-            <p className="mb-4">
-              ¿Quieres borrar el producto del carrito?
-            </p>
+            <p className="mb-4">¿Quieres borrar el producto del carrito?</p>
             <div className="flex justify-end gap-2">
               <button
                 onClick={cancelDelete}
@@ -279,10 +267,7 @@ const Cart = ({
       {/* Modal de Confirmación para vaciar el carrito */}
       {clearCartModal && (
         <div className="fixed inset-0 flex items-center justify-center z-[999]">
-          <div
-            className="fixed inset-0 bg-black opacity-50"
-            onClick={cancelClearCart}
-          ></div>
+          <div className="fixed inset-0 bg-black opacity-50"></div>
           <div
             onClick={(e) => e.stopPropagation()}
             className="bg-white p-6 rounded-2xl shadow-lg z-[1000]"
