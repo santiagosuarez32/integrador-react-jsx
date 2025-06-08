@@ -103,18 +103,19 @@ const Navbar = ({
             </a>
           </li>
           <li>
-            <a
-              href="#"
-              className="block py-2 hover:text-gray-600"
-              onClick={(e) => {
-                e.preventDefault();
-                navigate("/nosotros");
-                setMenuOpen(false);
-              }}
-            >
-              Nosotros
-            </a>
-          </li>
+  <a
+    href="#"
+    className="block py-2 hover:text-gray-600"
+    onClick={(e) => {
+      e.preventDefault();
+      navigate("/contacto"); // Cambia la ruta a "contacto"
+      setMenuOpen(false);
+    }}
+  >
+    Nosotros
+  </a>
+</li>
+
           <li>
             <a
               href="#"

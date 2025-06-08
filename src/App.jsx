@@ -11,6 +11,9 @@ import AboutUs from "./components/AboutUs";
 import Nosotros from "./components/Nosotros"; // Componente que muestra toda la información de "Nosotros"
 import Footer from "./components/Footer";
 import Cart from "./components/Cart"; // Se importa el componente Cart
+import Contacto from "./components/Contacto";
+import GoToContact from "./components/GoToContact";
+
 
 function App() {
   // Estado global del carrito
@@ -167,6 +170,7 @@ function App() {
         {/* NOTA: Se elimina ProductList de la Home.
             Solo se muestra en la ruta "/nosotros" y en Home se muestran AboutUs y Footer */}
         <AboutUs />
+        <GoToContact />
         <Footer />
       </>
     );
@@ -211,6 +215,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/products" element={<ProductsPage />} />
       <Route path="/nosotros" element={<Nosotros />} />
+      <Route path="/contacto" element={<Contacto />} />
     </Routes>
   );
 }
