@@ -8,7 +8,7 @@ export const products = [
   },
   {
     id: 2,
-    name: "Adidas Ultraboost 22",
+    name: "Adidas Ultraboost",
     price: 180.5,
     category: "Running",
     image: "/products/Adidas Ultraboost 22.png",

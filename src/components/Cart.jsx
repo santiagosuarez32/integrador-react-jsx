@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
-import { FaTimes } from "react-icons/fa";
+import { FaTimes, FaTrash } from "react-icons/fa";
 
 const Cart = ({
   isOpen,
@@ -9,27 +9,31 @@ const Cart = ({
   onIncrement,
   onDecrement,
   onClearCart,
-  onClearToast // nueva función para limpiar el toast de "producto añadido"
+  onClearToast, // función para limpiar el toast de "producto añadido"
+  onRemoveItem // función para remover un producto individual
 }) => {
   const [confirmModal, setConfirmModal] = useState(false);
+  // Estados para borrar un solo producto:
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
+  // Estado para el modal de vaciado total del carrito
+  const [clearCartModal, setClearCartModal] = useState(false);
 
   const totalPrice = cartItems.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
   );
 
-  // Solo abre el modal de confirmación si hay productos en el carrito.
-  // Además, si existe el toast de producto añadido, se limpia antes de abrir el modal de confirmación.
+  // Funciones de compra
   const handleComprar = () => {
     if (cartItems.length > 0) {
       if (typeof onClearToast === "function") {
-        onClearToast(); // Limpia el toast de "producto añadido" (o modal) antes de abrir confirmación.
+        onClearToast();
       }
       setConfirmModal(true);
     }
   };
 
-  // Al confirmar, se hace scroll hasta arriba y, tras un breve retraso, se redirige al home.
   const handleConfirm = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     setTimeout(() => {
@@ -37,9 +41,48 @@ const Cart = ({
     }, 300);
   };
 
-  // Cierra el modal de confirmación sin confirmar
   const handleCancel = () => {
     setConfirmModal(false);
+  };
+
+  // Funciones para borrar un solo producto
+  const handleDeleteClick = (item) => {
+    setItemToDelete(item);
+    setDeleteModal(true);
+  };
+
+  const confirmDelete = () => {
+    if (itemToDelete) {
+      if (typeof onRemoveItem === "function") {
+        onRemoveItem(itemToDelete.id);
+      } else {
+        console.error("Debes pasar la función onRemoveItem para eliminar productos");
+      }
+    }
+    setDeleteModal(false);
+    setItemToDelete(null);
+  };
+
+  const cancelDelete = () => {
+    setDeleteModal(false);
+    setItemToDelete(null);
+  };
+
+  // Funciones para vaciar el carrito mediante modal
+  const handleClearCartClick = () => {
+    if (typeof onClearToast === "function") {
+      onClearToast();
+    }
+    setClearCartModal(true);
+  };
+
+  const confirmClearCart = () => {
+    onClearCart();
+    setClearCartModal(false);
+  };
+
+  const cancelClearCart = () => {
+    setClearCartModal(false);
   };
 
   return ReactDOM.createPortal(
@@ -47,17 +90,15 @@ const Cart = ({
       {/* Overlay del carrito */}
       <div
         className={`fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm transition-opacity duration-500 ${
-          isOpen
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
+          isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         } z-[60]`}
         onClick={onClose}
       ></div>
 
-      {/* Panel del carrito */}
+      {/* Panel del carrito (responsive sin scroll horizontal) */}
       <div
-        className={`fixed top-20 rounded-xl right-0 h-screen max-h-[80vh] w-80 bg-gray-800 shadow-2xl transform transition-transform duration-500 ease-in-out ${
-          isOpen ? "translate-x-0" : "translate-x-full"
+        className={`fixed top-20 left-0 sm:left-auto sm:right-0 rounded-xl h-screen max-h-[80vh] w-full sm:w-80 overflow-x-hidden bg-gray-800 shadow-2xl transform transition-transform duration-500 ease-in-out ${
+          isOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-full"
         } z-[70]`}
       >
         <div
@@ -67,10 +108,7 @@ const Cart = ({
           {/* Encabezado */}
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold text-white">Carrito</h2>
-            <button
-              onClick={onClose}
-              className="text-white hover:text-gray-300 text-2xl"
-            >
+            <button onClick={onClose} className="text-white hover:text-gray-300 text-2xl">
               <FaTimes />
             </button>
           </div>
@@ -105,7 +143,13 @@ const Cart = ({
                     {/* Controles de cantidad */}
                     <div className="flex items-center">
                       <button
-                        onClick={() => onDecrement(item.id)}
+                        onClick={() => {
+                          if (item.quantity === 1) {
+                            handleDeleteClick(item);
+                          } else {
+                            onDecrement(item.id);
+                          }
+                        }}
                         className="bg-black hover:bg-red-700 text-white px-2 py-1 rounded-lg"
                       >
                         –
@@ -118,6 +162,13 @@ const Cart = ({
                         +
                       </button>
                     </div>
+                    {/* Botón para borrar el producto */}
+                    <button
+                      onClick={() => handleDeleteClick(item)}
+                      className="bg-red-500 text-white px-2 py-1 rounded-lg"
+                    >
+                      <FaTrash />
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -143,7 +194,7 @@ const Cart = ({
                 Comprar
               </button>
               <button
-                onClick={onClearCart}
+                onClick={handleClearCartClick}
                 className="flex-1 bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition-colors"
               >
                 Vaciar Carrito
@@ -156,12 +207,10 @@ const Cart = ({
       {/* Modal de Confirmación de Compra */}
       {confirmModal && (
         <div className="fixed inset-0 flex items-center justify-center z-[80]">
-          {/* Overlay del modal de confirmación */}
           <div
             className="fixed inset-0 bg-black opacity-50"
             onClick={handleCancel}
           ></div>
-          {/* Contenedor del modal (detiene propagación de clics) */}
           <div
             onClick={(e) => e.stopPropagation()}
             className="bg-white p-6 rounded-2xl shadow-lg z-[90]"
@@ -184,6 +233,78 @@ const Cart = ({
                 className="px-4 py-2 bg-green-600 text-white rounded-xl hover:bg-green-700"
               >
                 Confirmar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Confirmación para borrar un producto */}
+      {deleteModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-[85]">
+          <div
+            className="fixed inset-0 bg-black opacity-50"
+            onClick={cancelDelete}
+          ></div>
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white p-6 rounded-2xl shadow-lg z-[95]"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
+            <h3 className="text-xl font-semibold mb-4">Eliminar Producto</h3>
+            <p className="mb-4">
+              ¿Quieres borrar el producto del carrito?
+            </p>
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={cancelDelete}
+                className="px-4 py-2 bg-gray-300 rounded-xl hover:bg-gray-400"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  confirmDelete();
+                }}
+                className="px-4 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700"
+              >
+                Sí, eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de Confirmación para vaciar el carrito */}
+      {clearCartModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-[999]">
+          <div
+            className="fixed inset-0 bg-black opacity-50"
+            onClick={cancelClearCart}
+          ></div>
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="bg-white p-6 rounded-2xl shadow-lg z-[1000]"
+            style={{ fontFamily: "'Poppins', sans-serif" }}
+          >
+            <h3 className="text-xl font-semibold mb-4">Vaciar Carrito</h3>
+            <p className="mb-4">¿Quieres borrar los productos del carrito?</p>
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={cancelClearCart}
+                className="px-4 py-2 bg-gray-300 rounded-xl hover:bg-gray-400"
+              >
+                Cancelar
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  confirmClearCart();
+                }}
+                className="px-4 py-2 bg-red-600 text-white rounded-xl hover:bg-red-700"
+              >
+                Sí, borrar
               </button>
             </div>
           </div>

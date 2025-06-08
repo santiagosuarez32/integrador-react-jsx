@@ -10,10 +10,9 @@ import ProductList from "./components/ProductList";
 import AboutUs from "./components/AboutUs";
 import Nosotros from "./components/Nosotros"; // Componente que muestra toda la información de "Nosotros"
 import Footer from "./components/Footer";
-import Cart from "./components/Cart"; // Se importa el componente Cart
+import Cart from "./components/Cart"; // Se importa el componente Cart (ya modificado para usar un modal de confirmación al vaciar)
 import Contacto from "./components/Contacto";
 import GoToContact from "./components/GoToContact";
-
 
 function App() {
   // Estado global del carrito
@@ -62,6 +61,11 @@ function App() {
   };
 
   const handleClearCart = () => setCartItems([]);
+
+  // Nueva función para eliminar individualmente un producto
+  const handleRemoveItem = (id) => {
+    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  };
 
   // Esta es la estructura de la página principal (Home)
   const Home = () => {
@@ -135,9 +139,7 @@ function App() {
           className="p-16 bg-gray-500"
           style={{ fontFamily: "'Poppins', sans-serif" }}
         >
-          <h2 className="text-center text-2xl font-bold mb-6">
-            Productos Destacados
-          </h2>
+          <h2 className="text-center text-2xl font-bold mb-6">Productos Destacados</h2>
           <Slider {...settings}>
             {featuredProducts.map((product) => (
               <div key={product.id} className="px-4">
@@ -176,16 +178,16 @@ function App() {
     );
   };
 
-  // Componente para la ruta "/products": se muestra el listado con ProductList
-  // junto con el carrito en la esquina superior derecha y un botón "Volver" en la esquina superior izquierda.
-  // Se fuerza el scroll hasta arriba al montar.
+  // Componente para la ruta "/products"
+  // Se muestra el listado con ProductList junto con el carrito y un botón "Volver".
+  // Además, se muestra el Footer al final de la página.
   const ProductsPage = () => {
     const navigate = useNavigate();
     useEffect(() => {
       window.scrollTo(0, 0);
     }, []);
     return (
-      <div className="relative min-h-screen">
+      <div className="relative min-h-screen flex flex-col">
         {/* Botón "Volver" responsivo */}
         <div className="absolute top-2 left-2 sm:top-4 sm:left-4 z-50">
           <button
@@ -203,9 +205,13 @@ function App() {
             onIncrement={handleIncrement}
             onDecrement={handleDecrement}
             onClearCart={handleClearCart}
+            onRemoveItem={handleRemoveItem}
           />
         </div>
-        <ProductList onAddToCart={_handleAddToCart} />
+        <div className="flex-grow">
+          <ProductList onAddToCart={_handleAddToCart} />
+        </div>
+        <Footer />
       </div>
     );
   };

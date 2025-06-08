@@ -41,7 +41,10 @@ const Contacto = () => {
   }, [showModal, navigate]);
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-gray-700 relative" style={{ fontFamily: "'Poppins', sans-serif" }}>
+    <div
+      className="min-h-screen flex flex-col justify-between bg-gray-700 relative"
+      style={{ fontFamily: "'Poppins', sans-serif" }}
+    >
       <section className="flex items-center justify-center py-10 px-4 flex-grow">
         <button
           onClick={() => navigate("/")}
@@ -49,13 +52,17 @@ const Contacto = () => {
         >
           Volver
         </button>
-
         <div className="bg-white rounded-xl shadow-xl p-6 sm:p-8 max-w-xl w-full">
-          <h2 className="text-2xl sm:text-3xl font-bold text-blue-700 mb-4">Contáctanos</h2>
+          <h2 className="text-2xl sm:text-3xl font-bold text-blue-700 mb-4">
+            Contáctanos
+          </h2>
           <form noValidate onSubmit={formik.handleSubmit} className="space-y-4">
             {["nombre", "apellido", "correo", "asunto"].map((field) => (
               <div key={field}>
-                <label className="block text-sm font-medium text-gray-700" htmlFor={field}>
+                <label
+                  className="block text-sm font-medium text-gray-700"
+                  htmlFor={field}
+                >
                   {field.charAt(0).toUpperCase() + field.slice(1) + ":"}
                 </label>
                 <input
@@ -73,16 +80,30 @@ const Contacto = () => {
                   }`}
                 />
                 {formik.touched[field] && formik.errors[field] && (
-                  <p className="text-red-500 text-xs mt-1">{formik.errors[field]}</p>
+                  <p className="text-red-500 text-xs mt-1">
+                    {formik.errors[field]}
+                  </p>
                 )}
               </div>
             ))}
-            <button type="submit" className="w-full bg-blue-700 text-white font-bold py-2 px-2 rounded shadow hover:bg-blue-800 transition text-lg">
+            <button
+              type="submit"
+              className="w-full bg-blue-700 text-white font-bold py-2 px-2 rounded shadow hover:bg-blue-800 transition text-lg"
+            >
               Enviar
             </button>
           </form>
         </div>
       </section>
+
+      {/* Modal de solicitud enviada */}
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-6 rounded shadow-lg">
+            <p className="text-xl font-semibold">Solicitud enviada</p>
+          </div>
+        </div>
+      )}
 
       {/* Footer siempre al final */}
       <Footer />

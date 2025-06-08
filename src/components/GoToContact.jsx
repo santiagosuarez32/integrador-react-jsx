@@ -14,7 +14,7 @@ const GoToContact = () => {
         onClick={() => navigate("/contacto")}
         className="mt-5 bg-white text-blue-700 font-bold py-2 px-6 rounded-2xl hover:bg-gray-200 transition text-lg"
       >
-        Ir al formulario
+        Contactanos
       </button>
     </section>
   );
