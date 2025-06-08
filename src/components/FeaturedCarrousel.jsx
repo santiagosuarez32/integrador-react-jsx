@@ -7,26 +7,33 @@ import "slick-carousel/slick/slick-theme.css";
 
 const FeaturedCarousel = () => {
   const navigate = useNavigate();
-  
+
   // Selecciona aleatoriamente 5 productos destacados
   const featuredProducts = [...products]
     .sort(() => Math.random() - 0.5)
     .slice(0, 5);
 
-  // Configuración del slider
+  // Configuración del slider con responsividad solo para cambiar la cantidad de slides, pero las cards mantienen su tamaño fijo.
   const settings = {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: 3,  // Se muestran 3 slides en escritorio
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
     responsive: [
       {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3, // Mismo número de slides para mantener el tamaño de las cards
+          slidesToScroll: 1,
+        },
+      },
+      {
         breakpoint: 768,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 1, // En móviles se muestra un slide a la vez para que la card se vea tal cual
           slidesToScroll: 1,
         },
       },
@@ -34,11 +41,11 @@ const FeaturedCarousel = () => {
   };
 
   return (
-    <div id="productos" className="p-8">
-      <h2 className="text-center text-2xl font-bold mb-6">Productos Destacados</h2>
+    <div id="productos" className="p-4">
+      <h2 className="text-center text-2xl font-bold mb-4">Productos Destacados</h2>
       <Slider {...settings}>
         {featuredProducts.map((product) => (
-          <div key={product.id} className="px-4">
+          <div key={product.id} className="px-2">
             <div className="bg-gray-500 rounded-3xl p-4 text-center">
               <img
                 src={product.image}
@@ -55,10 +62,10 @@ const FeaturedCarousel = () => {
           </div>
         ))}
       </Slider>
-      <div className="text-center mt-6">
+      <div className="text-center mt-4">
         <button
           onClick={() => navigate("/products")}
-          className="bg-blue-600 text-white px-6 py-3 rounded-2xl hover:bg-blue-700 transition"
+          className="bg-blue-600 text-white px-4 py-2 rounded-2xl hover:bg-blue-700 transition text-sm"
         >
           Ver todos los productos
         </button>
