@@ -208,7 +208,7 @@ function App() {
             onRemoveItem={handleRemoveItem}
           />
         </div>
-        <div className="flex-grow">
+        <div className="flex-grow bg-gray-900">
           <ProductList onAddToCart={_handleAddToCart} />
         </div>
         <Footer />

@@ -18,12 +18,12 @@ const ProductList = ({ onAddToCart }) => {
         );
 
   return (
-    <div className="w-full flex flex-col items-center bg-gray-900">
+    <div className="w-full flex flex-col items-center bg-gray-900 min-h-screen">
       {/* Filtro de Categorías */}
       <CategoryFilter onSelectCategory={setSelectedCategory} />
 
       {/* Grid de Productos */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 w-full max-w-6xl px-12 mb-20 lg:mb-40">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 w-full max-w-6xl px-12 mb-20 lg:mb-40 bg-gray-900">
         {filteredProducts.length > 0 ? (
           filteredProducts.map((product) => (
             <div
