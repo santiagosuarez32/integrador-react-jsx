@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import products from "../data/products";
+import products from "../data/products"; // Importamos el array de productos
 import CategoryFilter from "./CategoryFilter";
 
-import "@fontsource/oswald"; 
-import "@fontsource/oswald/700.css";
+
+import "@fontsource/oswald"; // Fuente base
+import "@fontsource/oswald/700.css"; // Peso específico
 
 const ProductList = ({ onAddToCart }) => {
   const [selectedCategory, setSelectedCategory] = useState("Todos");
 
+  // Filtramos los productos según la categoría seleccionada
   const filteredProducts =
     selectedCategory === "Todos"
       ? products
@@ -29,16 +30,21 @@ const ProductList = ({ onAddToCart }) => {
               key={product.id}
               className="p-4 rounded-3xl text-center bg-gray-500"
             >
-              <LazyLoadImage
+              <img
                 src={product.image}
                 alt={product.name}
-                effect="blur" // Efecto de carga suave
                 className="w-48 mx-auto mb-4 rounded-md"
               />
-              <h3 className="text-lg font-bold" style={{ fontFamily: "'Oswald', sans-serif" }}>
+              <h3
+                className="text-lg font-bold"
+                style={{ fontFamily: "'Oswald', sans-serif" }}
+              >
                 {product.name}
               </h3>
-              <p className="text-black" style={{ fontFamily: "'Poppins', sans-serif" }}>
+              <p
+                className="text-black"
+                style={{ fontFamily: "'Poppins', sans-serif" }}
+              >
                 ${product.price.toFixed(2)}
               </p>
               <button
@@ -51,7 +57,9 @@ const ProductList = ({ onAddToCart }) => {
             </div>
           ))
         ) : (
-          <p className="text-gray-600 mt-4">No hay productos disponibles en esta categoría.</p>
+          <p className="text-gray-600 mt-4">
+            No products available in this category.
+          </p>
         )}
       </div>
     </div>
